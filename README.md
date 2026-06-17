@@ -10,7 +10,8 @@ No npm, no Sass, no external fonts or CDN dependencies. CSS and JS are processed
 
 ## Screenshots
 
-
+![Home](/img/home.png)
+![Single post](/img/single.png)
 
 ---
 
