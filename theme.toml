@@ -1,0 +1,13 @@
+name = "Kraft Masonry"
+license = "MIT"
+licenselink = "https://github.com/biccio/hugo-kraft-masonry/blob/main/LICENSE"
+description = "A minimal Hugo theme for personal blogs: left-aligned hero with two-line subtitle, masonry grid homepage with category filter, wide-card bento-style tiling, tags, and light/dark mode."
+homepage = "https://github.com/biccio/hugo-kraft-masonry"
+tags = ["blog", "personal", "masonry", "bento", "categories", "tags", "dark-mode", "minimal", "responsive"]
+features = ["masonry homepage", "bento-style wide cards", "client-side category filter", "tag taxonomy", "light/dark mode switch", "system color-scheme detection", "multi-category taxonomy", "classic single layout", "responsive", "no external dependencies"]
+min_version = "0.143.0"
+
+[author]
+  name     = "YOUR NAME"
+  email    = ""
+  homepage = ""

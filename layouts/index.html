@@ -1,0 +1,52 @@
+{{ define "main" }}
+
+{{/*
+  Hero: solo le righe di sottotitolo, senza titolo (che appare nell'header).
+
+  Ogni elemento di params.hero.subtitle (o params.subtitle per
+  retrocompatibilità) viene passato attraverso markdownify, quindi supporta
+  formattazione Markdown inline: **grassetto**, *corsivo*, [link](url), ecc.
+  L'HTML grezzo è accettato purché markup.goldmark.renderer.unsafe = true
+  sia impostato in hugo.toml (già presente nell'exampleSite).
+
+  Esempio in hugo.toml:
+    [params.hero]
+      subtitle = [
+        "A **minimal** Hugo theme for personal blogs.",
+        "Masonry grid · Category filter · Tags · [Light & dark mode](#).",
+        "Free and open source — MIT licence."
+      ]
+*/}}
+
+{{ $heroSubtitle := .Site.Params.subtitle }}
+{{ with .Site.Params.hero }}
+  {{ with .subtitle }}{{ $heroSubtitle = . }}{{ end }}
+{{ end }}
+
+{{ with $heroSubtitle }}
+  <section class="hero">
+    {{ range . }}
+      <p class="hero-subtitle-line">{{ . | markdownify }}</p>
+    {{ end }}
+    <div class="hero-rule" aria-hidden="true"></div>
+  </section>
+{{ end }}
+
+{{ partial "category-filter.html" . }}
+
+{{ $mainSections := .Site.Params.mainSections | default (slice "posts") }}
+{{ $pages := where site.RegularPages "Type" "in" $mainSections }}
+{{ $limit := .Site.Params.homepagePostLimit | default 12 }}
+{{ $latest := first $limit $pages.ByDate.Reverse }}
+
+{{ if $latest }}
+  <div class="masonry">
+    {{ range $latest }}
+      {{ partial "post-card.html" . }}
+    {{ end }}
+  </div>
+{{ else }}
+  <p class="list-empty">{{ i18n "noPosts" | default "No posts published yet." }}</p>
+{{ end }}
+
+{{ end }}

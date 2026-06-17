@@ -1,0 +1,23 @@
+{{/*
+  Imposta data-theme su <html> il più presto possibile, prima del primo
+  render, per evitare un "flash" del tema sbagliato.
+
+  Ordine di priorità:
+  1. Preferenza salvata dall'utente (localStorage, chiave "theme").
+  2. Preferenza di sistema (prefers-color-scheme).
+  Il pulsante in partials/header.html (gestito da assets/js/theme-toggle.js)
+  permette di sovrascrivere e salvare la scelta.
+*/}}
+<script>
+  (function () {
+    try {
+      var stored = localStorage.getItem("theme");
+      var theme = stored === "light" || stored === "dark"
+        ? stored
+        : (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+      document.documentElement.setAttribute("data-theme", theme);
+    } catch (e) {
+      /* localStorage non disponibile: si applica la media query CSS di fallback */
+    }
+  })();
+</script>

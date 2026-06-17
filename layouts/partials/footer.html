@@ -1,0 +1,6 @@
+<footer class="site-footer">
+  <div class="container">
+    <span>&copy; {{ now.Year }} {{ .Site.Title }}</span>
+    <span>{{ i18n "builtWith" | default "Realizzato con Hugo" }} — {{ .Site.Params.author | default .Site.Title }}</span>
+  </div>
+</footer>

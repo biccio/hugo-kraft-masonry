@@ -1,0 +1,25 @@
+{{/*
+  Barra dei filtri per categoria, mostrata sopra la griglia masonry.
+
+  - "Tutti" è attivo di default e mostra tutti i post.
+  - Ogni categoria presente nel sito genera un pulsante; il valore
+    data-filter è lo slug della categoria (urlize), che corrisponde
+    agli slug elencati in data-categories nelle card (vedi post-card.html).
+  - Il filtro è puramente client-side (assets/js/filter.js): se JS è
+    disabilitato, tutti i post restano visibili.
+*/}}
+
+{{ $taxonomy := .Site.Taxonomies.categories }}
+
+{{ if $taxonomy }}
+  <nav class="category-filter" data-category-filter aria-label="{{ i18n "filterByCategory" | default "Filtra per categoria" }}">
+    <button type="button" class="filter-btn is-active" data-filter="all" aria-pressed="true">
+      {{ i18n "all" | default "Tutti" }}
+    </button>
+    {{ range $name, $weightedPages := $taxonomy }}
+      <button type="button" class="filter-btn" data-filter="{{ $name | urlize }}" aria-pressed="false">
+        {{ $name | title }}
+      </button>
+    {{ end }}
+  </nav>
+{{ end }}

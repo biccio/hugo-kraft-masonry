@@ -1,0 +1,41 @@
+[all]
+other = "All"
+
+[filterByCategory]
+other = "Filter by category"
+
+[mainNav]
+other = "Main menu"
+
+[toggleTheme]
+other = "Toggle light/dark theme"
+
+[noPosts]
+other = "No posts published yet."
+
+[noCategories]
+other = "No categories defined yet."
+
+[noTags]
+other = "No tags defined yet."
+
+[tags]
+other = "Tags"
+
+[postSingular]
+other = "post"
+
+[postPlural]
+other = "posts"
+
+[taggedWith]
+other = "tagged with this"
+
+[builtWith]
+other = "Built with Hugo"
+
+[notFound]
+other = "Page not found."
+
+[backHome]
+other = "Back to home"

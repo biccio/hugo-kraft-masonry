@@ -1,0 +1,17 @@
+# Esempio di configurazione per il deploy su Netlify.
+# Copia questo file nella root del sito (accanto a hugo.toml) e adatta
+# se necessario.
+
+[build]
+  publish = "public"
+  command = "hugo --gc --minify"
+
+[build.environment]
+  # Il tema richiede Hugo >= 0.143.0 (impostato in theme.toml come min_version)
+  HUGO_VERSION = "0.143.0"
+
+[context.production.environment]
+  HUGO_ENV = "production"
+
+[context.deploy-preview]
+  command = "hugo --gc --minify --buildFuture -b $DEPLOY_PRIME_URL"

@@ -1,0 +1,108 @@
+{{ define "main" }}
+
+{{ if eq .Kind "taxonomy" }}
+
+  {{/*
+    -----------------------------------------------------------------------
+    Pagina di overview di una taxonomy.
+    - /categories/ → lista compatta con conteggio articoli
+    - /tags/       → tag cloud navigabile
+    -----------------------------------------------------------------------
+  */}}
+
+  {{ if eq .Data.Singular "tag" }}
+
+    {{/* ── TAG CLOUD (/tags/) ── */}}
+    <header class="tag-index-header">
+      <h1 class="tag-index-title">{{ .Title }}</h1>
+      {{ with .Content }}<div class="list-description">{{ . }}</div>{{ end }}
+    </header>
+
+    {{ $terms := .Data.Terms.Alphabetical }}
+    {{ if $terms }}
+      <div class="tag-cloud">
+        {{ range $terms }}
+          <a class="tag tag-cloud-item" href="{{ .Page.RelPermalink }}">
+            {{ .Page.Title }}
+            <span class="term-count">({{ .Count }})</span>
+          </a>
+        {{ end }}
+      </div>
+    {{ else }}
+      <p class="list-empty">{{ i18n "noTags" | default "Nessun tag definito ancora." }}</p>
+    {{ end }}
+
+  {{ else }}
+
+    {{/* ── CATEGORIES OVERVIEW (/categories/) ── */}}
+    <header class="list-header">
+      <h1 class="list-title">{{ .Title }}</h1>
+      {{ with .Content }}<div class="list-description">{{ . }}</div>{{ end }}
+    </header>
+
+    {{ $terms := .Data.Terms.Alphabetical }}
+    {{ if $terms }}
+      <ul class="term-list">
+        {{ range $terms }}
+          <li>
+            <a class="tag" href="{{ .Page.RelPermalink }}">{{ .Page.Title }}</a>
+            <span class="term-count">({{ .Count }})</span>
+          </li>
+        {{ end }}
+      </ul>
+    {{ else }}
+      <p class="list-empty">{{ i18n "noCategories" | default "Nessuna categoria definita ancora." }}</p>
+    {{ end }}
+
+  {{ end }}
+
+{{ else }}
+
+  {{/*
+    -----------------------------------------------------------------------
+    Pagina termine:
+    - /categories/<slug>/  → griglia masonry (comportamento invariato)
+    - /tags/<slug>/        → intestazione stilizzata + griglia masonry
+    -----------------------------------------------------------------------
+  */}}
+
+  {{ if eq .Data.Singular "tag" }}
+
+    {{/* ── INDICE DI UN TAG (/tags/<slug>/) ── */}}
+    <header class="tag-index-header">
+      <h1 class="tag-index-title"># {{ .Title }}</h1>
+      <p class="tag-index-meta">
+        {{ len .Pages }}
+        {{ if eq (len .Pages) 1 }}
+          {{ i18n "postSingular" | default "articolo" }}
+        {{ else }}
+          {{ i18n "postPlural" | default "articoli" }}
+        {{ end }}
+        {{ i18n "taggedWith" | default "con questo tag" }}
+      </p>
+    </header>
+
+  {{ else }}
+
+    {{/* ── INDICE DI UNA CATEGORIA (/categories/<slug>/) ── */}}
+    <header class="list-header">
+      <h1 class="list-title">{{ .Title }}</h1>
+      {{ with .Content }}<div class="list-description">{{ . }}</div>{{ end }}
+    </header>
+
+  {{ end }}
+
+  {{ $pages := .Pages }}
+  {{ if $pages }}
+    <div class="masonry">
+      {{ range $pages.ByDate.Reverse }}
+        {{ partial "post-card.html" . }}
+      {{ end }}
+    </div>
+  {{ else }}
+    <p class="list-empty">{{ i18n "noPosts" | default "Nessun articolo pubblicato ancora." }}</p>
+  {{ end }}
+
+{{ end }}
+
+{{ end }}

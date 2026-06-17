@@ -1,0 +1,43 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+{{ partial "theme-init.html" . }}
+<meta name="generator" content="Hugo {{ hugo.Version }}">
+
+<title>{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }} · {{ .Site.Title }}{{ end }}</title>
+
+{{ with (.Description | default .Site.Params.description) }}
+  <meta name="description" content="{{ . }}">
+{{ end }}
+
+<link rel="canonical" href="{{ .Permalink }}">
+
+{{/* Favicon: optional, set via static/favicon.ico */}}
+<link rel="icon" href="{{ "favicon.ico" | relURL }}">
+
+{{/* RSS feed autodiscovery */}}
+{{ with .OutputFormats.Get "rss" }}
+  <link rel="{{ .Rel }}" type="{{ .MediaType.Type }}" href="{{ .Permalink }}" title="{{ $.Site.Title }}">
+{{ end }}
+
+{{/* Stylesheet: processed, minified and fingerprinted via Hugo Pipes */}}
+{{ $css := resources.Get "css/main.css" }}
+{{ if hugo.IsProduction }}
+  {{ $css = $css | resources.Minify | resources.Fingerprint }}
+{{ end }}
+<link rel="stylesheet" href="{{ $css.RelPermalink }}"{{ with $css.Data.Integrity }} integrity="{{ . }}"{{ end }}>
+
+{{/* Theme toggle script: the toggle button lives in the header on every page */}}
+{{ $themeJS := resources.Get "js/theme-toggle.js" }}
+{{ if hugo.IsProduction }}
+  {{ $themeJS = $themeJS | resources.Minify | resources.Fingerprint }}
+{{ end }}
+<script src="{{ $themeJS.RelPermalink }}"{{ with $themeJS.Data.Integrity }} integrity="{{ . }}"{{ end }} defer></script>
+
+{{/* Category filter script: only needed on the homepage, where the filter bar lives */}}
+{{ if and .IsHome (.Site.Params.enableCategoryFilter | default true) }}
+  {{ $js := resources.Get "js/filter.js" }}
+  {{ if hugo.IsProduction }}
+    {{ $js = $js | resources.Minify | resources.Fingerprint }}
+  {{ end }}
+  <script src="{{ $js.RelPermalink }}"{{ with $js.Data.Integrity }} integrity="{{ . }}"{{ end }} defer></script>
+{{ end }}

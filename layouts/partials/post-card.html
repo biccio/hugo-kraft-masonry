@@ -1,0 +1,71 @@
+{{/*
+  Card per un singolo post, usata nella griglia masonry della homepage
+  e nelle pagine di lista/categoria.
+
+  - Immagine: cerca prima una risorsa della page bundle che inizi con
+    "cover", "feature" o "thumbnail"; altrimenti usa il parametro
+    front matter "image" (percorso o URL).
+  - Categorie: esposte come attributo data-categories (slug separati da
+    spazio) per il filtro client-side, e come etichette visibili.
+  - Layout "wide": alcune card occupano 2 colonne della griglia, con
+    immagine e testo affiancati. Sono scelte in modo deterministico ma
+    "casuale" (basato su lunghezza del titolo/permalink e giorno
+    dell'anno della data), oppure forzate via front matter:
+
+      featured: true   # forza la card a comparire larga (2 colonne)
+      featured: false  # esclude la card dal layout largo
+*/}}
+
+{{ $page := . }}
+{{ $categories := $page.Params.categories }}
+{{ $categorySlugs := "" }}
+{{ if $categories }}
+  {{ $categorySlugs = delimit (apply $categories "urlize" ".") " " }}
+{{ end }}
+
+{{ $image := "" }}
+{{ with $page.Resources.GetMatch "{cover,feature,thumbnail}*" }}
+  {{ $image = .RelPermalink }}
+{{ else }}
+  {{ with $page.Params.image }}
+    {{ $image = . | absURL }}
+  {{ end }}
+{{ end }}
+
+{{/* Determina se questa card occupa 2 colonne ("wide"). */}}
+{{ $isWide := false }}
+{{ if (isset $page.Params "featured") }}
+  {{ $isWide = $page.Params.featured }}
+{{ else }}
+  {{ $seed := add (len $page.Title) (len $page.RelPermalink) $page.Date.YearDay }}
+  {{ $every := $page.Site.Params.wideCardEvery | default 4 }}
+  {{ $isWide = eq (mod $seed $every) 0 }}
+{{ end }}
+
+{{ $cardClass := "post-card" }}
+{{ if $isWide }}{{ $cardClass = "post-card post-card--wide" }}{{ end }}
+
+{{ $abstractLen := 160 }}
+{{ if $isWide }}{{ $abstractLen = 240 }}{{ end }}
+
+<article class="{{ $cardClass }}"{{ with $categorySlugs }} data-categories="{{ . }}"{{ end }}>
+  <a class="post-card-link" href="{{ $page.RelPermalink }}">
+    {{ if $image }}
+      <div class="post-card-image">
+        <img src="{{ $image }}" alt="{{ $page.Title }}" loading="lazy">
+      </div>
+    {{ end }}
+    <div class="post-card-body">
+      <div class="post-card-meta">
+        <span class="post-card-date">{{ $page.Date.Format "2006-01-02" }}</span>
+        {{ range $categories }}
+          <span class="tag">{{ . }}</span>
+        {{ end }}
+      </div>
+      <h2 class="post-card-title">{{ $page.Title }}</h2>
+      {{ with $page.Summary }}
+        <p class="post-card-abstract">{{ . | plainify | truncate $abstractLen }}</p>
+      {{ end }}
+    </div>
+  </a>
+</article>

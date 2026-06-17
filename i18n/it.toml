@@ -1,0 +1,41 @@
+[all]
+other = "Tutti"
+
+[filterByCategory]
+other = "Filtra per categoria"
+
+[mainNav]
+other = "Menu principale"
+
+[toggleTheme]
+other = "Cambia tema chiaro/scuro"
+
+[noPosts]
+other = "Nessun articolo pubblicato ancora."
+
+[noCategories]
+other = "Nessuna categoria definita ancora."
+
+[noTags]
+other = "Nessun tag definito ancora."
+
+[tags]
+other = "Tag"
+
+[postSingular]
+other = "articolo"
+
+[postPlural]
+other = "articoli"
+
+[taggedWith]
+other = "con questo tag"
+
+[builtWith]
+other = "Realizzato con Hugo"
+
+[notFound]
+other = "Pagina non trovata."
+
+[backHome]
+other = "Torna alla home"

@@ -1,0 +1,53 @@
+baseURL = "https://example.com/"
+languageCode = "en-us"
+defaultContentLanguage = "en"
+title = "Kraft Masonry"
+theme = "hugo-kraft-masonry"
+
+disablePathToLower = false
+
+[taxonomies]
+  category = "categories"
+  tag      = "tags"
+
+[params]
+  description = "A demo site for the Kraft Masonry Hugo theme — travel, technology, and everyday life."
+  author      = "Jane Doe"
+
+  mainSections       = ["posts"]
+  homepagePostLimit  = 12
+  enableCategoryFilter = true
+
+  [params.hero]
+    title    = "Kraft Masonry"
+    subtitle = [
+      "A **minimal** Hugo theme for personal blogs.",
+      "Masonry grid · Category filter · Tags · Light & dark mode.",
+      "Free and open source — [MIT licence](https://github.com/YOUR_USERNAME/hugo-kraft-masonry/blob/main/LICENSE)."
+    ]
+
+[menus]
+  [[menus.main]]
+    name   = "Posts"
+    url    = "/posts/"
+    weight = 10
+
+  [[menus.main]]
+    name   = "Categories"
+    url    = "/categories/"
+    weight = 20
+
+  [[menus.main]]
+    name   = "Tags"
+    url    = "/tags/"
+    weight = 25
+
+  [[menus.main]]
+    name   = "About"
+    url    = "/about/"
+    weight = 30
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true

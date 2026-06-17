@@ -1,0 +1,13 @@
+{{ define "main" }}
+
+<section class="hero">
+  <h1 class="hero-title">404</h1>
+  <p class="hero-subtitle">
+    <span class="subtitle-line">{{ i18n "notFound" | default "Pagina non trovata." }}</span>
+  </p>
+  <div class="hero-rule" aria-hidden="true"></div>
+</section>
+
+<p class="list-empty"><a href="{{ "/" | relLangURL }}">{{ i18n "backHome" | default "Torna alla home" }}</a></p>
+
+{{ end }}
