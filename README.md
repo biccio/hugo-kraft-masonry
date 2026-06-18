@@ -10,9 +10,7 @@ No npm, no Sass, no external fonts or CDN dependencies. CSS and JS are processed
 
 ## Screenshots
 
-![Home](/img/home.png)
-***
-![Single post](/img/single.png)
+> Add screenshots here once you deploy the theme.
 
 ---
 
@@ -41,7 +39,7 @@ Hugo **0.143.0** or later (extended edition recommended for future Sass support)
 
 ```bash
 cd your-site
-git submodule add https://github.com/biccio/hugo-kraft-masonry.git themes/hugo-kraft-masonry
+git submodule add https://github.com/YOUR_USERNAME/hugo-kraft-masonry.git themes/hugo-kraft-masonry
 ```
 
 Then in your `hugo.toml`:
@@ -56,11 +54,11 @@ Copy the `hugo-kraft-masonry/` folder (excluding `exampleSite/`) into your site'
 
 ### Try the demo site
 
-The `exampleSite/` directory contains a ready-to-run site with six sample posts across three categories ("Travels", "Technology", "Everyday life") and multiple tags.
+The `exampleSite/` directory contains a ready-to-run site with six sample posts across three categories ("Viaggi", "Tecnologia", "Vita quotidiana") and multiple tags.
 
 ```bash
 mkdir my-site && cd my-site
-git submodule add https://github.com/biccio/hugo-kraft-masonry.git themes/hugo-kraft-masonry
+git submodule add https://github.com/YOUR_USERNAME/hugo-kraft-masonry.git themes/hugo-kraft-masonry
 cp -r themes/hugo-kraft-masonry/exampleSite/* .
 hugo server
 ```
@@ -119,9 +117,10 @@ categories: ["travel"]     # one or more categories
 tags: ["gravel", "italy"]  # one or more tags
 image: "https://..."       # cover image URL (optional)
 featured: true             # force this card to be wide (optional)
+summary: "A hand-written summary shown in the card instead of the auto-generated one."  # optional
 ---
 
-Opening paragraph — used as the card abstract on the homepage.
+Opening paragraph — used as the card abstract when no summary field is set.
 
 <!--more-->
 
@@ -139,7 +138,16 @@ If neither is present the card is shown without an image (text adjusts automatic
 
 ### Abstract
 
-Generated from Hugo's `.Summary`: the text before `<!--more-->`, or the first ~70 words if the marker is absent. Truncated to 160 characters in normal cards, 240 in wide cards.
+The card abstract comes from Hugo's `.Summary`, processed through three fallback strategies in priority order:
+
+1. **`summary` front matter field** — write the abstract directly in the post header. Hugo uses this verbatim, giving you full control over wording without touching the post body:
+   ```yaml
+   summary: "A concise, hand-crafted description shown in the homepage card."
+   ```
+2. **`<!--more-->` marker** — everything before the marker becomes the summary. The marker also controls where Hugo truncates the post on list pages.
+3. **Automatic** — Hugo takes the first ~70 words of the body if neither of the above is present.
+
+Regardless of the source, the theme truncates the final string to **160 characters** for normal cards and **240 characters** for wide (`featured`) cards. This means a long `summary` field or a lengthy `<!--more-->` section will still be cut off at those limits in the card — they only affect what text is available before truncation, not the truncation itself.
 
 ---
 
