@@ -10,7 +10,9 @@ No npm, no Sass, no external fonts or CDN dependencies. CSS and JS are processed
 
 ## Screenshots
 
-> Add screenshots here once you deploy the theme.
+![Homepage screen](/img/home.png)
+***
+![Single page screen](/img/home.png)
 
 ---
 
