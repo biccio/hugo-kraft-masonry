@@ -18,6 +18,10 @@ disablePathToLower = false
   homepagePostLimit  = 12
   enableCategoryFilter = true
 
+  # Social sharing — optional
+  # ogImage       = "/img/og-default.png"  # fallback OG image (e.g. for homepage and posts without a cover)
+  # twitterHandle = "yourhandle"           # without the @ sign
+
   [params.hero]
     title    = "Kraft Masonry"
     subtitle = [
