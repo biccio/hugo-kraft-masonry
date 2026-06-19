@@ -343,8 +343,15 @@ a {
 @media (max-width: 640px) {
   .masonry {
     grid-template-columns: 1fr;
-    align-items: start;    /* cards size to their own content, not the tallest in the row */
-    overflow-x: hidden;    /* prevent border from bleeding past container padding */
+    align-items: start;
+    margin: 0 -1.5rem;        /* counteract .container padding → edge-to-edge cards */
+    border-radius: 0;
+  }
+
+  .masonry .post-card {
+    border-radius: 0;          /* full-bleed: no rounded corners at screen edges */
+    border-left: none;
+    border-right: none;
   }
 
   /* Con una sola colonna una card "larga" non avrebbe nulla in più da
