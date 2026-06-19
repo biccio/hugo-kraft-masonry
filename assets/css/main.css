@@ -355,8 +355,17 @@ a {
   }
 
   /* Con una sola colonna una card "larga" non avrebbe nulla in più da
-     occupare: si comporta come una card normale. */
-  .post-card--wide {
+     occupare: si comporta come una card normale.
+
+     NB: il selettore è .masonry .post-card--wide (specificità 0-2-0) e non
+     il semplice .post-card--wide (0-1-0). La regola base che assegna
+     "grid-column: span 2" compare più in basso nel file: a parità di
+     specificità vincerebbe per ordine sorgente e questa regola mobile
+     verrebbe ignorata (la card resterebbe a span 2 anche su mobile, con
+     creazione di una colonna implicita, buchi nella griglia e card spinte
+     fuori dal viewport). Il prefisso .masonry alza la specificità e rende
+     la regola immune all'ordine. */
+  .masonry .post-card--wide {
     grid-column: span 1;
   }
 }
