@@ -330,6 +330,7 @@ a {
   grid-auto-flow: dense;
   align-items: stretch;
   gap: var(--gap);
+  width: 100%;
   padding-bottom: 3.5rem;
 }
 
@@ -342,6 +343,8 @@ a {
 @media (max-width: 640px) {
   .masonry {
     grid-template-columns: 1fr;
+    align-items: start;    /* cards size to their own content, not the tallest in the row */
+    overflow-x: hidden;    /* prevent border from bleeding past container padding */
   }
 
   /* Con una sola colonna una card "larga" non avrebbe nulla in più da
