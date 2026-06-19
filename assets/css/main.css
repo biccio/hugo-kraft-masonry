@@ -344,14 +344,17 @@ a {
   .masonry {
     grid-template-columns: 1fr;
     align-items: start;
-    margin: 0 -1.5rem;        /* counteract .container padding → edge-to-edge cards */
-    border-radius: 0;
-  }
+    /* Niente full-bleed su mobile: la griglia resta dentro il padding del
+       .container (1.5rem per lato), così le card appaiono centrate con
+       margini simmetrici, anziché a tutta larghezza e schiacciate a
+       sinistra. Bordi e angoli arrotondati restano quelli della regola
+       base .post-card.
 
-  .masonry .post-card {
-    border-radius: 0;          /* full-bleed: no rounded corners at screen edges */
-    border-left: none;
-    border-right: none;
+       NB: il vecchio "margin: 0 -1.5rem" non produceva un full-bleed
+       simmetrico, perché .masonry ha "width: 100%": con una larghezza
+       esplicita i margini negativi non allargano la griglia su entrambi i
+       lati. Il margine sinistro la portava a x=0, ma la larghezza restava
+       fissa a "container − 3rem", lasciando ~3rem di vuoto a destra. */
   }
 
   /* Con una sola colonna una card "larga" non avrebbe nulla in più da
