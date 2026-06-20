@@ -23,7 +23,7 @@ No npm, no Sass, no external fonts or CDN dependencies. CSS and JS are processed
 - **Client-side category filter** — instant filtering by category, no page reload
 - **Tag taxonomy** — tag list at the bottom of each post, clickable tag cloud at `/tags/`
 - **Light / dark mode** — system preference detection + manual toggle persisted to `localStorage`
-- **Responsive** — 3 / 2 / 1 column breakpoints
+- **Responsive** — 3 / 2 / 1 column breakpoints, with an optional toggle to hide the hero on mobile
 - **No external dependencies** — system font stacks, Hugo Pipes for CSS/JS minification and fingerprinting
 - **i18n ready** — Italian and English string files included; add more via `i18n/`
 
@@ -100,6 +100,7 @@ defaultContentLanguage = "en"
 | Parameter | Default | Description |
 |---|---|---|
 | `params.hero.subtitle` | — | Array of strings rendered below the site header as the homepage hero. Each element is a separate line, processed through Hugo's `markdownify` — inline Markdown is fully supported: `**bold**`, `*italic*`, `[link](url)`, and raw HTML (requires `markup.goldmark.renderer.unsafe = true`). The hero is **not shown** if this key is absent. |
+| `params.disableDescriptionMobile` | `false` | When `true`, hides the homepage hero / intro block (the `hero.subtitle` lines) on viewports ≤ 640px. The hero stays visible on tablet and desktop. Handy for surfacing the post grid immediately on small screens. Implemented by adding the `hero--hide-mobile` class to the hero in `layouts/index.html`, which a `@media (max-width: 640px)` rule in `main.css` sets to `display: none`. |
 | `params.description` | — | Fallback meta description for pages that don't define their own. |
 | `params.author` | site `title` | Displayed in the footer. |
 | `params.mainSections` | `["posts"]` | Content sections treated as "posts" for the homepage masonry grid. |

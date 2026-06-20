@@ -144,6 +144,13 @@ a {
   border-bottom-color: var(--color-accent);
 }
 
+/* Mobile: navigazione più compatta (gap ridotto da 1.75rem). */
+@media (max-width: 640px) {
+  .site-nav ul {
+    gap: 1.1rem;
+  }
+}
+
 .site-header-actions {
   display: flex;
   align-items: center;
@@ -256,6 +263,15 @@ a {
   display: block;
   flex: 1 1 auto;
   border-top: 1px dashed var(--color-line);
+}
+
+/* Nasconde l'hero (intro/description della homepage) su mobile quando
+   params.disableDescriptionMobile = true. La classe .hero--hide-mobile
+   viene aggiunta all'elemento <section class="hero"> in layouts/index.html. */
+@media (max-width: 640px) {
+  .hero--hide-mobile {
+    display: none;
+  }
 }
 
 /* ==========================================================================

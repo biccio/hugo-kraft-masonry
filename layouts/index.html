@@ -16,6 +16,10 @@
         "Masonry grid · Category filter · Tags · [Light & dark mode](#).",
         "Free and open source — MIT licence."
       ]
+
+  Se params.disableDescriptionMobile = true, all'hero viene aggiunta la
+  classe .hero--hide-mobile, che lo nasconde sotto i 640px (vedi main.css).
+  L'hero resta comunque visibile su desktop/tablet.
 */}}
 
 {{ $heroSubtitle := .Site.Params.subtitle }}
@@ -23,8 +27,13 @@
   {{ with .subtitle }}{{ $heroSubtitle = . }}{{ end }}
 {{ end }}
 
+{{ $heroClass := "hero" }}
+{{ if .Site.Params.disableDescriptionMobile }}
+  {{ $heroClass = "hero hero--hide-mobile" }}
+{{ end }}
+
 {{ with $heroSubtitle }}
-  <section class="hero">
+  <section class="{{ $heroClass }}">
     {{ range . }}
       <p class="hero-subtitle-line">{{ . | markdownify }}</p>
     {{ end }}
