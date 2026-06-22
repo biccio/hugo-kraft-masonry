@@ -90,6 +90,10 @@
   <meta name="twitter:creator" content="@{{ . }}">
 {{ end }}
 
+{{/* JSON-LD structured data: emitted only for pages with a `schema`
+     front-matter block (see partials/schema.html). */}}
+{{ partial "schema.html" . }}
+
 {{/* Stylesheet: processed, minified and fingerprinted via Hugo Pipes */}}
 {{ $css := resources.Get "css/main.css" }}
 {{ if hugo.IsProduction }}

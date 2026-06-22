@@ -1,0 +1,105 @@
+{{/* =========================================================================
+     partials/schema.html — JSON-LD structured data (schema.org)
+
+     Emits a <script type="application/ld+json"> block built from the post's
+     `schema` front matter (see the exampleSite posts for the shape). Nothing
+     is emitted when the page has no `schema` key, so it is safe to call from
+     head.html on every page.
+
+     Page-derived fields (headline, dates, url, image, wordCount, language) are
+     filled automatically; the `schema` block adds the semantic metadata
+     (author, publisher, keywords, about[], mentions[], …). The object is built
+     with `dict`/`slice` and serialised with `jsonify`, so quoting, escaping and
+     commas are always valid — never hand-write JSON in a template.
+
+     Front-matter `type` keys (on about/mentions/author/publisher) are mapped to
+     the JSON-LD `@type`. Omitted fields fall back to site values: author →
+     params.author, publisher → site title/baseURL, language → site language.
+     ========================================================================= */}}
+
+{{ $page := . }}
+{{ with .Params.schema }}
+  {{ $s := . }}
+
+  {{/* ---- base object (page-derived) ---- */}}
+  {{ $data := dict
+    "@context" "https://schema.org"
+    "@type" ($s.type | default "BlogPosting")
+    "headline" $page.Title
+    "datePublished" $page.Date
+    "dateModified" $page.Lastmod
+    "url" $page.Permalink
+    "mainEntityOfPage" $page.Permalink
+  }}
+
+  {{/* ---- description (front-matter `description`, else summary) ---- */}}
+  {{ $desc := $page.Description }}
+  {{ if not $desc }}{{ $desc = $page.Summary | plainify }}{{ end }}
+  {{ with $desc }}{{ $data = merge $data (dict "description" .) }}{{ end }}
+
+  {{/* ---- language (else site language) ---- */}}
+  {{ $lang := $s.inLanguage }}
+  {{ if not $lang }}{{ $lang = or $page.Site.Language.LanguageCode $page.Site.LanguageCode "en" }}{{ end }}
+  {{ $data = merge $data (dict "inLanguage" $lang) }}
+
+  {{/* ---- articleSection (else first category) ---- */}}
+  {{ $section := $s.articleSection }}
+  {{ if and (not $section) $page.Params.categories }}{{ $section = index $page.Params.categories 0 }}{{ end }}
+  {{ with $section }}{{ $data = merge $data (dict "articleSection" .) }}{{ end }}
+
+  {{/* ---- wordCount (else Hugo's computed count) ---- */}}
+  {{ $data = merge $data (dict "wordCount" (int ($s.wordCount | default $page.WordCount))) }}
+
+  {{/* ---- image (cover resource or `image` param, absolute URL) ---- */}}
+  {{ $img := "" }}
+  {{ with $page.Resources.GetMatch "{cover,feature,thumbnail}*" }}
+    {{ $img = .Permalink }}
+  {{ else }}
+    {{ with $page.Params.image }}{{ $img = . | absURL }}{{ end }}
+  {{ end }}
+  {{ with $img }}{{ $data = merge $data (dict "image" .) }}{{ end }}
+
+  {{/* ---- keywords (schema.keywords, else post tags) ---- */}}
+  {{ with ($s.keywords | default $page.Params.tags) }}
+    {{ $data = merge $data (dict "keywords" .) }}
+  {{ end }}
+
+  {{/* ---- author (default @type Person; else site author) ---- */}}
+  {{ with $s.author }}
+    {{ $a := dict "@type" (.type | default "Person") "name" .name }}
+    {{ with .url }}{{ $a = merge $a (dict "url" .) }}{{ end }}
+    {{ $data = merge $data (dict "author" $a) }}
+  {{ else }}
+    {{ with $page.Site.Params.author }}
+      {{ $data = merge $data (dict "author" (dict "@type" "Person" "name" .)) }}
+    {{ end }}
+  {{ end }}
+
+  {{/* ---- publisher (default @type Organization; else site) ---- */}}
+  {{ with $s.publisher }}
+    {{ $p := dict "@type" (.type | default "Organization") "name" .name }}
+    {{ with .url }}{{ $p = merge $p (dict "url" .) }}{{ end }}
+    {{ with .logo }}{{ $p = merge $p (dict "logo" (dict "@type" "ImageObject" "url" .)) }}{{ end }}
+    {{ $data = merge $data (dict "publisher" $p) }}
+  {{ else }}
+    {{ $data = merge $data (dict "publisher" (dict "@type" "Organization" "name" $page.Site.Title "url" $page.Site.BaseURL)) }}
+  {{ end }}
+
+  {{/* ---- about[] and mentions[]: front-matter `type` → JSON-LD `@type` ---- */}}
+  {{ range $i, $key := slice "about" "mentions" }}
+    {{ with (index $s $key) }}
+      {{ $out := slice }}
+      {{ range . }}
+        {{ $entity := dict "@type" (.type | default "Thing") "name" .name }}
+        {{ with .sameAs }}{{ $entity = merge $entity (dict "sameAs" .) }}{{ end }}
+        {{ with .url }}{{ $entity = merge $entity (dict "url" .) }}{{ end }}
+        {{ $out = $out | append $entity }}
+      {{ end }}
+      {{ $data = merge $data (dict $key $out) }}
+    {{ end }}
+  {{ end }}
+
+  <script type="application/ld+json">
+{{ $data | jsonify (dict "indent" "  ") }}
+  </script>
+{{ end }}

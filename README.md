@@ -24,6 +24,7 @@ No npm, no Sass, no external fonts or CDN dependencies. CSS and JS are processed
 - **Tag taxonomy** — tag list at the bottom of each post, clickable tag cloud at `/tags/`
 - **Light / dark mode** — system preference detection + manual toggle persisted to `localStorage`
 - **Responsive** — 3 / 2 / 1 column breakpoints, with an optional toggle to hide the hero on mobile
+- **Structured data** — optional JSON-LD (schema.org) per post, from a `schema` front-matter block
 - **No external dependencies** — system font stacks, Hugo Pipes for CSS/JS minification and fingerprinting
 - **i18n ready** — Italian and English string files included; add more via `i18n/`
 
@@ -196,6 +197,36 @@ Tags are linked from the footer of each single post (shown only when `tags` is d
 
 ---
 
+## Structured data (JSON-LD)
+
+Any post can carry an optional `schema` front-matter block, which the theme renders as a `<script type="application/ld+json">` (schema.org) in `<head>` — improving SEO and rich-result eligibility. Page-derived fields (headline, dates, URL, cover image, word count, language) are filled in automatically; the block adds the semantic metadata. Front-matter `type` keys map to the JSON-LD `@type`, and omitted fields fall back to site values (`params.author`, the site title as publisher, the site language). Pages without a `schema` block emit nothing.
+
+```yaml
+schema:
+  type: "BlogPosting"            # JSON-LD @type (default: BlogPosting)
+  inLanguage: "en-us"            # default: site language
+  articleSection: "Technology"   # default: first category
+  author:
+    name: "Jane Doe"
+    url: "https://example.com/about/"
+  publisher:
+    name: "My Blog"
+    url: "https://example.com/"
+  keywords: ["hugo", "performance"]   # default: post tags
+  about:                          # entities the post is about
+    - type: "SoftwareApplication"
+      name: "Hugo"
+      sameAs: "https://gohugo.io/"
+  mentions:                       # entities merely mentioned
+    - type: "Person"
+      name: "Ada Lovelace"
+      sameAs: "https://en.wikipedia.org/wiki/Ada_Lovelace"
+```
+
+The JSON is assembled with Hugo's `dict`/`slice` and serialised with `jsonify`, so quoting and escaping are always valid. See `layouts/partials/schema.html`, and validate output with Google's [Rich Results Test](https://search.google.com/test/rich-results) or [Schema Markup Validator](https://validator.schema.org/).
+
+---
+
 ## Light / dark mode
 
 - On load, an **inline blocking script** in `<head>` (`partials/theme-init.html`) sets `data-theme="light"` or `"dark"` on `<html>` before the first paint, reading `localStorage` first, then `prefers-color-scheme`. No flash.
@@ -270,6 +301,7 @@ hugo-kraft-masonry/
 │       ├── head.html
 │       ├── header.html         # site logo + nav + light/dark toggle
 │       ├── post-card.html      # masonry card (normal + wide)
+│       ├── schema.html         # JSON-LD structured data (per post)
 │       └── theme-init.html     # inline blocking script (no flash)
 ├── exampleSite/                # demo site with sample posts
 ├── theme.toml

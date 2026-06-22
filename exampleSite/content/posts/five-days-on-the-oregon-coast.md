@@ -1,10 +1,34 @@
 ---
 title: "Five Days on the Oregon Coast: A Cycling Diary"
 date: 2026-05-28
+lastmod: 2026-05-28
+description: "A five-day, 420 km solo cycling diary along the Oregon Coast Route — headwinds, Sitka spruce, ferry times, and excellent pie."
 categories: ["travel"]
 tags: ["cycling", "pacific-coast", "bikepacking", "solo-trip"]
 image: "https://picsum.photos/seed/oregon-coast/900/700"
 featured: true
+schema:
+  type: "BlogPosting"
+  inLanguage: "en-us"
+  articleSection: "Travel"
+  author:
+    name: "Jane Doe"
+    url: "https://example.com/about/"
+  publisher:
+    name: "Kraft Masonry"
+    url: "https://example.com/"
+  keywords: ["cycling", "pacific-coast", "bikepacking", "solo-trip"]
+  about:
+    - type: "Place"
+      name: "Oregon Coast"
+      sameAs: "https://en.wikipedia.org/wiki/Oregon_Coast"
+  mentions:
+    - type: "Place"
+      name: "Astoria, Oregon"
+      sameAs: "https://en.wikipedia.org/wiki/Astoria,_Oregon"
+    - type: "Place"
+      name: "Coos Bay"
+      sameAs: "https://en.wikipedia.org/wiki/Coos_Bay,_Oregon"
 ---
 
 The highway hugs the cliffs for miles at a stretch — no guardrail, just a white line and the Pacific dropping away below. Five days on the Oregon Coast Route taught me that the best cycling roads are the ones that make you forget you're working.

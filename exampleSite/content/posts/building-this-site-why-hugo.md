@@ -1,9 +1,33 @@
 ---
 title: "Building This Site: Why I Chose Hugo in 2026"
 date: 2026-05-14
+lastmod: 2026-05-14
+description: "Why I rebuilt my personal site on Hugo in 2026: speed, no runtime, and a folder of HTML files instead of a CMS, a build pipeline, and a CDN purge to debug."
 categories: ["technology"]
 tags: ["hugo", "static-site", "web-dev", "performance"]
 image: "https://picsum.photos/seed/hugo-build/900/700"
+schema:
+  type: "BlogPosting"
+  inLanguage: "en-us"
+  articleSection: "Technology"
+  author:
+    name: "Jane Doe"
+    url: "https://example.com/about/"
+  publisher:
+    name: "Kraft Masonry"
+    url: "https://example.com/"
+  keywords: ["hugo", "static-site", "web-dev", "performance"]
+  about:
+    - type: "SoftwareApplication"
+      name: "Hugo"
+      sameAs: "https://gohugo.io/"
+  mentions:
+    - type: "SoftwareApplication"
+      name: "Jekyll"
+      sameAs: "https://jekyllrb.com/"
+    - type: "SoftwareApplication"
+      name: "Gatsby"
+      sameAs: "https://www.gatsbyjs.com/"
 ---
 
 Every few years I rebuild my personal site from scratch and spend far too long justifying the choice of tool. This time the answer was Hugo — and the reasoning was simpler than I expected.
