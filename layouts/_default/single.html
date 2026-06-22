@@ -9,12 +9,17 @@
   {{ end }}
 {{ end }}
 
+{{/* Formato data visibile: locale-aware via time.Format (params.dateFormat,
+     default ":date_long"). L'attributo datetime resta in ISO 8601, leggibile
+     dalle macchine, indipendentemente dal formato mostrato all'utente. */}}
+{{ $dateFmt := .Site.Params.dateFormat | default ":date_long" }}
+
 <article class="post-single">
   <header class="post-header">
     <h1 class="post-title">{{ .Title }}</h1>
     {{ if ne .Type "page" }}
       <div class="post-meta">
-        <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006-01-02" }}</time>
+        <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date | time.Format $dateFmt }}</time>
         {{ with .Params.categories }}
           {{ range . }}
             <a class="tag" href="{{ "/categories/" | relLangURL }}{{ . | urlize }}/">{{ . }}</a>
