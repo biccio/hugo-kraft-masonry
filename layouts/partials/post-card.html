@@ -7,6 +7,8 @@
     front matter "image" (percorso o URL).
   - Categorie: esposte come attributo data-categories (slug separati da
     spazio) per il filtro client-side, e come etichette visibili.
+  - Data: resa con time.Format (locale-aware) secondo params.dateFormat
+    (default ":date_long"); rispetta lingua/ordine della pagina.
   - Layout "wide": alcune card occupano 2 colonne della griglia, con
     immagine e testo affiancati. Sono scelte in modo deterministico ma
     "casuale" (basato su lunghezza del titolo/permalink e giorno
@@ -48,6 +50,9 @@
 {{ $abstractLen := 160 }}
 {{ if $isWide }}{{ $abstractLen = 240 }}{{ end }}
 
+{{/* Formato data: locale-aware via time.Format (vedi params.dateFormat). */}}
+{{ $dateFmt := $page.Site.Params.dateFormat | default ":date_long" }}
+
 <article class="{{ $cardClass }}"{{ with $categorySlugs }} data-categories="{{ . }}"{{ end }}>
   <a class="post-card-link" href="{{ $page.RelPermalink }}">
     {{ if $image }}
@@ -57,7 +62,7 @@
     {{ end }}
     <div class="post-card-body">
       <div class="post-card-meta">
-        <span class="post-card-date">{{ $page.Date.Format "2006-01-02" }}</span>
+        <span class="post-card-date">{{ $page.Date | time.Format $dateFmt }}</span>
         {{ range $categories }}
           <span class="tag">{{ . }}</span>
         {{ end }}

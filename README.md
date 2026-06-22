@@ -104,6 +104,7 @@ defaultContentLanguage = "en"
 | `params.disableDescriptionMobile` | `false` | When `true`, hides the homepage hero / intro block (the `hero.subtitle` lines) on viewports ≤ 640px. The hero stays visible on tablet and desktop. Handy for surfacing the post grid immediately on small screens. Implemented by adding the `hero--hide-mobile` class to the hero in `layouts/index.html`, which a `@media (max-width: 640px)` rule in `main.css` sets to `display: none`. |
 | `params.description` | — | Fallback meta description for pages that don't define their own. |
 | `params.author` | site `title` | Displayed in the footer. |
+| `params.dateFormat` | `:date_long` | Layout for the **visible** post date, rendered with Hugo's locale-aware `time.Format`. Use a predefined token — `:date_full`, `:date_long` (e.g. *June 19, 2026* / *19 giugno 2026*), `:date_medium`, `:date_short` — or a custom Go layout, e.g. `02/01/2006` → *19/06/2026* (numeric, day-first). Month and weekday names are localized to the page language; the `<time datetime>` attribute always stays ISO 8601. For per-language formats, set it under `[languages.xx.params]`. |
 | `params.mainSections` | `["posts"]` | Content sections treated as "posts" for the homepage masonry grid. |
 | `params.homepagePostLimit` | `12` | Maximum number of posts shown in the homepage grid, sorted by date descending. |
 | `params.enableCategoryFilter` | `true` | Show / hide the category filter bar and its JS on the homepage. |

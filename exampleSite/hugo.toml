@@ -18,6 +18,12 @@ disablePathToLower = false
   homepagePostLimit  = 12
   enableCategoryFilter = true
 
+  # Visible post-date format, rendered with Hugo's locale-aware time.Format.
+  # Predefined tokens: ":date_full", ":date_long" (default), ":date_medium",
+  # ":date_short". Or a custom Go layout, e.g. "02/01/2006" → 19/06/2026
+  # (numeric, day-first). Month/weekday names are localized to the page language.
+  # dateFormat = ":date_long"
+
   # Social sharing — optional
   # ogImage       = "/img/og-default.png"  # fallback OG image (e.g. for homepage and posts without a cover)
   # twitterHandle = "yourhandle"           # without the @ sign
