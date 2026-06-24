@@ -152,7 +152,7 @@ The card abstract comes from Hugo's `.Summary`, processed through three fallback
 2. **`<!--more-->` marker** — everything before the marker becomes the summary. The marker also controls where Hugo truncates the post on list pages.
 3. **Automatic** — Hugo takes the first ~70 words of the body if neither of the above is present.
 
-Regardless of the source, the theme truncates the final string to **160 characters** for normal cards and **240 characters** for wide (`featured`) cards. This means a long `summary` field or a lengthy `<!--more-->` section will still be cut off at those limits in the card — they only affect what text is available before truncation, not the truncation itself.
+Regardless of the source, the theme truncates the final string to **200 characters** for normal cards and **240 characters** for wide (`featured`) cards. This means a long `summary` field or a lengthy `<!--more-->` section will still be cut off at those limits in the card — they only affect what text is available before truncation, not the truncation itself.
 
 ---
 
