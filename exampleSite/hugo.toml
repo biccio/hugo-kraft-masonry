@@ -28,6 +28,10 @@ disablePathToLower = false
   # ogImage       = "/img/og-default.png"  # fallback OG image (e.g. for homepage and posts without a cover)
   # twitterHandle = "yourhandle"           # without the @ sign
 
+  [params.footer]
+    left  = "&copy; 2026 Kraft Masonry"
+    right = "Built with [Hugo](https://gohugo.io) &amp; **Kraft Masonry**"
+
   [params.hero]
     title    = "Kraft Masonry"
     subtitle = [
