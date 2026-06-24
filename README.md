@@ -103,7 +103,9 @@ defaultContentLanguage = "en"
 | `params.hero.subtitle` | — | Array of strings rendered below the site header as the homepage hero. Each element is a separate line, processed through Hugo's `markdownify` — inline Markdown is fully supported: `**bold**`, `*italic*`, `[link](url)`, and raw HTML (requires `markup.goldmark.renderer.unsafe = true`). The hero is **not shown** if this key is absent. |
 | `params.disableDescriptionMobile` | `false` | When `true`, hides the homepage hero / intro block (the `hero.subtitle` lines) on viewports ≤ 640px. The hero stays visible on tablet and desktop. Handy for surfacing the post grid immediately on small screens. Implemented by adding the `hero--hide-mobile` class to the hero in `layouts/index.html`, which a `@media (max-width: 640px)` rule in `main.css` sets to `display: none`. |
 | `params.description` | — | Fallback meta description for pages that don't define their own. |
-| `params.author` | site `title` | Displayed in the footer. |
+| `params.author` | site `title` | Displayed in the right footer span when `params.footer.right` is not set. |
+| `params.footer.left` | `© <year> <site title>` | Left span of the footer. Accepts inline Markdown (`**bold**`, `[link](url)`, HTML entities). Rendered with Hugo's `markdownify`. |
+| `params.footer.right` | i18n `builtWith` + `params.author` | Right span of the footer. Accepts inline Markdown. Rendered with Hugo's `markdownify`. |
 | `params.dateFormat` | `:date_long` | Layout for the **visible** post date, rendered with Hugo's locale-aware `time.Format`. Use a predefined token — `:date_full`, `:date_long` (e.g. *June 19, 2026* / *19 giugno 2026*), `:date_medium`, `:date_short` — or a custom Go layout, e.g. `02/01/2006` → *19/06/2026* (numeric, day-first). Month and weekday names are localized to the page language; the `<time datetime>` attribute always stays ISO 8601. For per-language formats, set it under `[languages.xx.params]`. |
 | `params.mainSections` | `["posts"]` | Content sections treated as "posts" for the homepage masonry grid. |
 | `params.homepagePostLimit` | `12` | Maximum number of posts shown in the homepage grid, sorted by date descending. |
@@ -195,6 +197,22 @@ With `[taxonomies] tag = "tags"` in `hugo.toml`, Hugo automatically generates:
 - **`/tags/<slug>/`** — masonry grid of all posts carrying that tag, with a `# Tag Name · N posts` header.
 
 Tags are linked from the footer of each single post (shown only when `tags` is defined in front matter and the page type is not `page`). Hovering a tag pill fills it with the accent colour — the same interaction as the active category filter button.
+
+---
+
+## Footer
+
+The footer has two configurable spans — left and right — set via `[params.footer]` in `hugo.toml`. Both accept inline Markdown and are rendered with Hugo's `markdownify`.
+
+```toml
+[params.footer]
+  left  = "&copy; 2026 My Blog"
+  right = "Built with [Hugo](https://gohugo.io) &amp; **Kraft Masonry**"
+```
+
+If either key is omitted, the theme falls back to its default:
+- **left** — `© <current year> <site title>` (auto-updated each build)
+- **right** — the i18n `builtWith` string followed by `params.author` (or the site title if `author` is not set)
 
 ---
 
