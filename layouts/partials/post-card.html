@@ -53,7 +53,7 @@
 {{/* Formato data: locale-aware via time.Format (vedi params.dateFormat). */}}
 {{ $dateFmt := $page.Site.Params.dateFormat | default ":date_long" }}
 
-<article class="{{ $cardClass }}"{{ with $categorySlugs }} data-categories="{{ . }}"{{ end }}>
+<article class="{{ $cardClass }}" data-categories="{{ $categorySlugs }}">
   <a class="post-card-link" href="{{ $page.RelPermalink }}">
     {{ if $image }}
       <div class="post-card-image">

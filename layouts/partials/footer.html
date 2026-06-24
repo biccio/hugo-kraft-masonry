@@ -1,6 +1,6 @@
 <footer class="site-footer">
   <div class="container">
-    <span>{{ with .Site.Params.footer.left }}{{ . | markdownify }}{{ else }}&copy; {{ now.Year }} {{ $.Site.Title }}{{ end }}</span>
-    <span>{{ with .Site.Params.footer.right }}{{ . | markdownify }}{{ else }}{{ i18n "builtWith" | default "Built with Hugo" }} — {{ $.Site.Params.author | default $.Site.Title }}{{ end }}</span>
+    <span>{{ with .Site.Params.footer.left }}{{ . | markdownify | replaceRE "(?s)^<p>(.*)</p>\n?$" "${1}" | safeHTML }}{{ else }}&copy; {{ now.Year }} {{ $.Site.Title }}{{ end }}</span>
+    <span>{{ with .Site.Params.footer.right }}{{ . | markdownify | replaceRE "(?s)^<p>(.*)</p>\n?$" "${1}" | safeHTML }}{{ else }}{{ i18n "builtWith" | default "Built with Hugo" }} — {{ $.Site.Params.author | default $.Site.Title }}{{ end }}</span>
   </div>
 </footer>
