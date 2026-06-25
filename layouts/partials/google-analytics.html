@@ -1,0 +1,19 @@
+{{/*
+  Google Analytics (GA4).
+
+  Enabled by setting params.googleAnalytics to a GA4 measurement ID
+  (e.g. "G-XXXXXXXXXX") in hugo.toml. Only loaded in production builds
+  (hugo --environment production / HUGO_ENV=production) so dev/preview
+  traffic doesn't pollute analytics.
+*/}}
+{{ with .Site.Params.googleAnalytics }}
+  {{ if hugo.IsProduction }}
+    <script async src="https://www.googletagmanager.com/gtag/js?id={{ . }}"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', '{{ . }}');
+    </script>
+  {{ end }}
+{{ end }}

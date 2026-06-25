@@ -111,6 +111,7 @@ defaultContentLanguage = "en"
 | `params.homepagePostLimit` | `12` | Maximum number of posts shown in the homepage grid, sorted by date descending. |
 | `params.enableCategoryFilter` | `true` | Show / hide the category filter bar and its JS on the homepage. |
 | `params.wideCardEvery` | `4` | Controls wide-card frequency when `featured` is not set in front matter. A card is made wide when `(len(title) + len(permalink) + date.YearDay) mod wideCardEvery == 0`. Default: roughly 1 in 4 cards. |
+| `params.googleAnalytics` | — | GA4 measurement ID (e.g. `G-XXXXXXXXXX`). When set, the `gtag.js` snippet is injected in `<head>` — only on production builds (`hugo --environment production` / `HUGO_ENV=production`), so local/preview traffic isn't tracked. |
 
 ---
 
@@ -216,6 +217,19 @@ If either key is omitted, the theme falls back to its default:
 
 ---
 
+## Google Analytics
+
+Set `params.googleAnalytics` in `hugo.toml` to your GA4 measurement ID to enable tracking:
+
+```toml
+[params]
+  googleAnalytics = "G-XXXXXXXXXX"
+```
+
+The `gtag.js` snippet is injected in `<head>` (see `layouts/partials/google-analytics.html`) only when building with `hugo --environment production` or `HUGO_ENV=production`, so `hugo server` and preview builds don't send traffic. Leave the parameter unset to disable analytics entirely.
+
+---
+
 ## Structured data (JSON-LD)
 
 Any post can carry an optional `schema` front-matter block, which the theme renders as a `<script type="application/ld+json">` (schema.org) in `<head>` — improving SEO and rich-result eligibility. Page-derived fields (headline, dates, URL, cover image, word count, language) are filled in automatically; the block adds the semantic metadata. Front-matter `type` keys map to the JSON-LD `@type`, and omitted fields fall back to site values (`params.author`, the site title as publisher, the site language). Pages without a `schema` block emit nothing.
@@ -317,6 +331,7 @@ hugo-kraft-masonry/
 │   └── partials/
 │       ├── category-filter.html
 │       ├── footer.html
+│       ├── google-analytics.html  # GA4 snippet (params.googleAnalytics, production only)
 │       ├── head.html
 │       ├── header.html         # site logo + nav + light/dark toggle
 │       ├── post-card.html      # masonry card (normal + wide)
