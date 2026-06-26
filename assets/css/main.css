@@ -633,6 +633,49 @@ a {
   margin-top: 0.5rem;
 }
 
+/* Immagini inline con allineamento */
+.post-content figure.img-left,
+.post-content figure.img-right {
+  width: 42%;
+  max-width: 420px;
+}
+
+.post-content figure.img-left {
+  float: left;
+  margin: 0.25rem 1.75rem 1rem 0;
+}
+
+.post-content figure.img-right {
+  float: right;
+  margin: 0.25rem 0 1rem 1.75rem;
+}
+
+.post-content figure.img-center {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.post-content figure.img-full {
+  width: 100%;
+  max-width: none;
+}
+
+/* Clearfix: evita che il testo successivo al float
+   non esca dal contenitore */
+.post-content .img-clear {
+  clear: both;
+}
+
+@media (max-width: 600px) {
+  .post-content figure.img-left,
+  .post-content figure.img-right {
+    float: none;
+    width: 100%;
+    max-width: none;
+    margin: 0;
+  }
+}
+
 .post-content blockquote {
   margin: 0;
   padding: 0.25rem 1.25rem;

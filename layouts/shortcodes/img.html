@@ -1,0 +1,29 @@
+{{/*
+  Shortcode: img
+  Inserisce un'immagine inline nel corpo del post con allineamento opzionale.
+
+  Parametri:
+    src     (obbligatorio) percorso o URL dell'immagine
+    alt     testo alternativo (default: "")
+    caption didascalia sotto l'immagine (default: nessuna)
+    align   "left" | "right" | "center" (default) | "full"
+    width   larghezza esplicita, es. "300px" o "50%" (opzionale)
+
+  Esempi:
+    {{< img src="foto.jpg" alt="Descrizione" align="left" caption="La didascalia" >}}
+    {{< img src="/images/mappa.png" alt="Mappa" align="right" width="280px" >}}
+    {{< img src="panorama.jpg" alt="Vista" align="full" >}}
+*/}}
+
+{{ $src     := .Get "src" }}
+{{ $alt     := .Get "alt"     | default "" }}
+{{ $caption := .Get "caption" | default "" }}
+{{ $align   := .Get "align"   | default "center" }}
+{{ $width   := .Get "width"   | default "" }}
+
+{{ $class := printf "img-%s" $align }}
+
+<figure class="{{ $class }}"{{ with $width }} style="width:{{ . }}"{{ end }}>
+  <img src="{{ $src }}" alt="{{ $alt }}">
+  {{ with $caption }}<figcaption>{{ . }}</figcaption>{{ end }}
+</figure>

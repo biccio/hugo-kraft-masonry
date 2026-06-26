@@ -24,6 +24,7 @@ No npm, no Sass, no external fonts or CDN dependencies. CSS and JS are processed
 - **Tag taxonomy** — tag list at the bottom of each post, clickable tag cloud at `/tags/`
 - **Light / dark mode** — system preference detection + manual toggle persisted to `localStorage`
 - **Responsive** — 3 / 2 / 1 column breakpoints, with an optional toggle to hide the hero on mobile
+- **Inline image shortcode** — `{{< img >}}` with `left` / `right` / `center` / `full` alignment, optional caption and width override; floats collapse gracefully on mobile
 - **Structured data** — optional JSON-LD (schema.org) per post, from a `schema` front-matter block
 - **No external dependencies** — system font stacks, Hugo Pipes for CSS/JS minification and fingerprinting
 - **i18n ready** — Italian and English string files included; add more via `i18n/`
@@ -156,6 +157,32 @@ The card abstract comes from Hugo's `.Summary`, processed through three fallback
 3. **Automatic** — Hugo takes the first ~70 words of the body if neither of the above is present.
 
 Regardless of the source, the theme truncates the final string to **200 characters** for normal cards and **240 characters** for wide (`featured`) cards. This means a long `summary` field or a lengthy `<!--more-->` section will still be cut off at those limits in the card — they only affect what text is available before truncation, not the truncation itself.
+
+---
+
+## Inline images
+
+Use the `{{< img >}}` shortcode to insert images anywhere in the body of a post with explicit alignment. Hugo's standard Markdown `![]()` syntax still works and produces a centred block image, but the shortcode adds float support and captions.
+
+```
+{{< img src="photo.jpg" alt="Alt text" align="left" caption="Optional caption" >}}
+{{< img src="/images/map.png" alt="Map" align="right" width="280px" >}}
+{{< img src="panorama.jpg" alt="Landscape" align="full" >}}
+```
+
+| Parameter | Default | Description |
+|---|---|---|
+| `src` | *(required)* | Path or URL of the image. |
+| `alt` | `""` | Alternative text for accessibility. |
+| `align` | `center` | `left` — float left, text wraps right. `right` — float right, text wraps left. `center` — centred block. `full` — 100 % content width. |
+| `caption` | — | Optional caption rendered in `<figcaption>` (monospace, muted, centred). |
+| `width` | — | Explicit width override, e.g. `300px` or `50%`. Overrides the default 42 % float width. |
+
+Floating images (`left` / `right`) are 42 % wide (max 420 px) on desktop and revert to full-width on viewports ≤ 600 px. To stop text wrapping after a float, insert an empty paragraph with the `img-clear` class:
+
+```html
+<div class="img-clear"></div>
+```
 
 ---
 
@@ -328,6 +355,8 @@ hugo-kraft-masonry/
 │   │   ├── baseof.html         # shared HTML skeleton
 │   │   ├── list.html           # sections, category pages, tag pages
 │   │   └── single.html         # classic post layout + tag footer
+│   ├── shortcodes/
+│   │   └── img.html            # inline image with alignment (left/right/center/full)
 │   └── partials/
 │       ├── category-filter.html
 │       ├── footer.html
