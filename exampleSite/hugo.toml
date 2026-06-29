@@ -31,11 +31,14 @@ disablePathToLower = false
   # Google Analytics (GA4) — optional, loaded only in production builds
   # googleAnalytics = "G-XXXXXXXXXX"
 
-  # EchoThread comments — optional; widget is not rendered if apiKey is absent
+  # EchoThread comments — optional; widget is not rendered if shortname or
+  # the ECHOTHREAD_API_KEY env var are absent.
   # [params.echothread]
-  #   apiKey      = "YOUR_API_KEY"  # from echothread.io dashboard (required)
+  #   shortname   = "yourshortname" # from echothread.io dashboard (required)
   #   theme       = "auto"          # auto | light | dark  (default: auto)
   #   accentColor = ""              # optional hex accent, e.g. "#2f5d50"
+  # Set API key via environment variable (never put it in hugo.toml):
+  #   export ECHOTHREAD_API_KEY="your-api-key"
 
   [params.footer]
     left  = "&copy; 2026 Kraft Masonry"

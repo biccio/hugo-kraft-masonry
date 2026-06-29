@@ -1,10 +1,12 @@
 {{- $cfg := .Site.Params.echothread -}}
-{{- if and $cfg $cfg.apiKey -}}
+{{- $apiKey := os.Getenv "ECHOTHREAD_API_KEY" -}}
+{{- if and $cfg $cfg.shortname $apiKey -}}
 {{- $id := .Permalink -}}
 {{- with .File }}{{- $id = .UniqueID -}}{{- end -}}
 <section class="post-comments">
   <div id="echothread"
-       data-api-key="{{ $cfg.apiKey }}"
+       data-shortname="{{ $cfg.shortname }}"
+       data-api-key="{{ $apiKey }}"
        data-page-url="{{ .Permalink }}"
        data-identifier="{{ $id }}"
        data-page-title="{{ .Title }}"
