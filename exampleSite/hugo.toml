@@ -33,9 +33,10 @@ disablePathToLower = false
 
   # EchoThread comments — optional; widget is not rendered if apiKey is absent
   # [params.echothread]
-  #   apiKey      = "YOUR_API_KEY"  # from echothread.io dashboard (required)
-  #   theme       = "auto"          # auto | light | dark  (default: auto)
-  #   accentColor = ""              # optional hex accent, e.g. "#2f5d50"
+  #   apiKey      = "YOUR_API_KEY"   # from echothread.io dashboard (required)
+  #   shortname   = "yourshortname"  # your EchoThread shortname (required)
+  #   theme       = "auto"           # auto | light | dark  (default: auto)
+  #   accentColor = ""               # optional hex accent, e.g. "#2f5d50"
 
   [params.footer]
     left  = "&copy; 2026 Kraft Masonry"

@@ -115,6 +115,7 @@ defaultContentLanguage = "en"
 | `params.wideCardEvery` | `4` | Controls wide-card frequency when `featured` is not set in front matter. A card is made wide when `(len(title) + len(permalink) + date.YearDay) mod wideCardEvery == 0`. Default: roughly 1 in 4 cards. |
 | `params.googleAnalytics` | — | GA4 measurement ID (e.g. `G-XXXXXXXXXX`). When set, the `gtag.js` snippet is injected in `<head>` — only on production builds (`hugo --environment production` / `HUGO_ENV=production`), so local/preview traffic isn't tracked. |
 | `params.echothread.apiKey` | — | EchoThread API key from your dashboard. When set, the comment widget is rendered at the bottom of every post. Leave unset to disable comments entirely. |
+| `params.echothread.shortname` | — | Your EchoThread shortname (the `data-shortname` attribute on the widget). |
 | `params.echothread.theme` | `auto` | Widget colour scheme: `auto` (follows OS preference), `light`, or `dark`. |
 | `params.echothread.accentColor` | — | Optional hex colour for the widget accent (e.g. `#2f5d50` to match the theme default). |
 
@@ -267,9 +268,10 @@ The `gtag.js` snippet is injected in `<head>` (see `layouts/partials/google-anal
 
 ```toml
 [params.echothread]
-  apiKey      = "YOUR_API_KEY"  # from echothread.io dashboard
-  theme       = "auto"          # auto | light | dark (default: auto)
-  accentColor = "#2f5d50"       # optional — match your brand colour
+  apiKey      = "YOUR_API_KEY"   # from echothread.io dashboard (required)
+  shortname   = "yourshortname"  # your EchoThread shortname (required)
+  theme       = "auto"           # auto | light | dark (default: auto)
+  accentColor = "#2f5d50"        # optional — match your brand colour
 ```
 
 Leave the block absent (or omit `apiKey`) to disable comments entirely — no HTML is emitted.

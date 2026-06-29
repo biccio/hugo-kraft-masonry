@@ -4,6 +4,7 @@
 {{- with .File }}{{- $id = .UniqueID -}}{{- end -}}
 <section class="post-comments">
   <div id="echothread"
+       {{- with $cfg.shortname }} data-shortname="{{ . }}"{{ end }}
        data-api-key="{{ $cfg.apiKey }}"
        data-page-url="{{ .Permalink }}"
        data-identifier="{{ $id }}"
