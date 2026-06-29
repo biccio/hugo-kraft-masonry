@@ -57,6 +57,10 @@
       </ul>
     </footer>
   {{ end }}
+
+  {{ if ne .Type "page" }}
+    {{ partial "comments-echothread.html" . }}
+  {{ end }}
 </article>
 
 {{ end }}

@@ -1,0 +1,16 @@
+{{- $cfg := .Site.Params.echothread -}}
+{{- if and $cfg $cfg.apiKey -}}
+{{- $id := .Permalink -}}
+{{- with .File }}{{- $id = .UniqueID -}}{{- end -}}
+<section class="post-comments">
+  <div id="echothread"
+       data-api-key="{{ $cfg.apiKey }}"
+       data-page-url="{{ .Permalink }}"
+       data-identifier="{{ $id }}"
+       data-page-title="{{ .Title }}"
+       data-lang="{{ .Language.Lang }}"
+       {{- with $cfg.theme }} data-theme="{{ . }}"{{ end -}}
+       {{- with $cfg.accentColor }} data-accent-color="{{ . }}"{{ end -}}></div>
+  <script src="https://cdn.echothread.io/widget.js" async></script>
+</section>
+{{- end -}}

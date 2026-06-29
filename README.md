@@ -26,6 +26,7 @@ No npm, no Sass, no external fonts or CDN dependencies. CSS and JS are processed
 - **Responsive** — 3 / 2 / 1 column breakpoints, with an optional toggle to hide the hero on mobile
 - **Inline image shortcode** — `{{< img >}}` with `left` / `right` / `center` / `full` alignment, optional caption and width override; floats collapse gracefully on mobile
 - **Structured data** — optional JSON-LD (schema.org) per post, from a `schema` front-matter block
+- **EchoThread comments** — opt-in comment section per post; set `params.echothread.apiKey` to enable
 - **No external dependencies** — system font stacks, Hugo Pipes for CSS/JS minification and fingerprinting
 - **i18n ready** — Italian and English string files included; add more via `i18n/`
 
@@ -113,6 +114,9 @@ defaultContentLanguage = "en"
 | `params.enableCategoryFilter` | `true` | Show / hide the category filter bar and its JS on the homepage. |
 | `params.wideCardEvery` | `4` | Controls wide-card frequency when `featured` is not set in front matter. A card is made wide when `(len(title) + len(permalink) + date.YearDay) mod wideCardEvery == 0`. Default: roughly 1 in 4 cards. |
 | `params.googleAnalytics` | — | GA4 measurement ID (e.g. `G-XXXXXXXXXX`). When set, the `gtag.js` snippet is injected in `<head>` — only on production builds (`hugo --environment production` / `HUGO_ENV=production`), so local/preview traffic isn't tracked. |
+| `params.echothread.apiKey` | — | EchoThread API key from your dashboard. When set, the comment widget is rendered at the bottom of every post. Leave unset to disable comments entirely. |
+| `params.echothread.theme` | `auto` | Widget colour scheme: `auto` (follows OS preference), `light`, or `dark`. |
+| `params.echothread.accentColor` | — | Optional hex colour for the widget accent (e.g. `#2f5d50` to match the theme default). |
 
 ---
 
@@ -257,6 +261,23 @@ The `gtag.js` snippet is injected in `<head>` (see `layouts/partials/google-anal
 
 ---
 
+## Comments (EchoThread)
+
+[EchoThread](https://echothread.io) is a privacy-first, lightweight comment service (no ads, no tracking, < 15 KB). Set `params.echothread.apiKey` in `hugo.toml` to render the widget at the bottom of every post:
+
+```toml
+[params.echothread]
+  apiKey      = "YOUR_API_KEY"  # from echothread.io dashboard
+  theme       = "auto"          # auto | light | dark (default: auto)
+  accentColor = "#2f5d50"       # optional — match your brand colour
+```
+
+Leave the block absent (or omit `apiKey`) to disable comments entirely — no HTML is emitted.
+
+Each post's comment thread is identified by `File.UniqueID` (an MD5 of the source file path), so threads survive URL changes. `data-page-url` and `data-page-title` are passed automatically for the dashboard view. The widget language follows the page's Hugo language code (`data-lang`).
+
+---
+
 ## Structured data (JSON-LD)
 
 Any post can carry an optional `schema` front-matter block, which the theme renders as a `<script type="application/ld+json">` (schema.org) in `<head>` — improving SEO and rich-result eligibility. Page-derived fields (headline, dates, URL, cover image, word count, language) are filled in automatically; the block adds the semantic metadata. Front-matter `type` keys map to the JSON-LD `@type`, and omitted fields fall back to site values (`params.author`, the site title as publisher, the site language). Pages without a `schema` block emit nothing.
@@ -359,6 +380,7 @@ hugo-kraft-masonry/
 │   │   └── img.html            # inline image with alignment (left/right/center/full)
 │   └── partials/
 │       ├── category-filter.html
+│       ├── comments-echothread.html  # EchoThread widget (params.echothread.apiKey)
 │       ├── footer.html
 │       ├── google-analytics.html  # GA4 snippet (params.googleAnalytics, production only)
 │       ├── head.html
