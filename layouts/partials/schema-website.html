@@ -1,0 +1,41 @@
+{{/* =========================================================================
+     partials/schema-website.html — JSON-LD WebSite structured data for the
+     homepage.
+
+     Emits a <script type="application/ld+json"> block only on the homepage
+     (.IsHome). The block is always emitted (it needs no config); the site
+     title and baseURL are used automatically.
+
+     Optional: if params.website_ld.search_url_template is set, a
+     SearchAction (Sitelinks Search Box) is included. The template must
+     contain the literal placeholder {search_term_string}, e.g.:
+       "https://example.org/?q={search_term_string}"
+
+     The SearchAction is what makes Google's Rich Results Test detect an
+     eligible item on the homepage. Without it the WebSite entity is still
+     emitted and indexed, but does not qualify for a rich result card.
+     ========================================================================= */}}
+
+{{ if .IsHome }}
+  {{ $data := dict
+    "@context" "https://schema.org"
+    "@type"    "WebSite"
+    "name"     .Site.Title
+    "url"      .Site.BaseURL
+  }}
+
+  {{ with .Site.Params.website_ld }}
+    {{ with .search_url_template }}
+      {{ $action := dict
+        "@type"       "SearchAction"
+        "target"      (dict "@type" "EntryPoint" "urlTemplate" .)
+        "query-input" "required name=search_term_string"
+      }}
+      {{ $data = merge $data (dict "potentialAction" $action) }}
+    {{ end }}
+  {{ end }}
+
+  <script type="application/ld+json">
+{{ $data | jsonify (dict "indent" "  ") | safeJS }}
+  </script>
+{{ end }}

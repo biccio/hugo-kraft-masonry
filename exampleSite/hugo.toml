@@ -38,6 +38,14 @@ disablePathToLower = false
   #   theme       = "auto"           # auto | light | dark  (default: auto)
   #   accentColor = ""               # optional hex accent, e.g. "#2f5d50"
 
+  # WebSite structured data (JSON-LD) for the homepage.
+  # A <script type="application/ld+json"> block with @type WebSite is always
+  # emitted on the homepage using the site title and baseURL. Adding
+  # search_url_template enables the Sitelinks Search Box rich result — the
+  # placeholder {search_term_string} is required by Google's spec.
+  # [params.website_ld]
+  #   search_url_template = "https://example.org/?q={search_term_string}"
+
   # Person structured data (JSON-LD) for the homepage — optional.
   # When present, a <script type="application/ld+json"> block with @type Person
   # is emitted in the <head> of the homepage only. All fields are optional.

@@ -98,6 +98,11 @@
      and params.person_ld in hugo.toml). */}}
 {{ partial "schema-homepage.html" . }}
 
+{{/* JSON-LD WebSite data for the homepage — always emitted on .IsHome;
+     add params.website_ld.search_url_template to enable SearchAction
+     (Sitelinks Search Box). See partials/schema-website.html. */}}
+{{ partial "schema-website.html" . }}
+
 {{/* Stylesheet: processed, minified and fingerprinted via Hugo Pipes */}}
 {{ $css := resources.Get "css/main.css" }}
 {{ if hugo.IsProduction }}

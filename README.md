@@ -25,7 +25,7 @@ No npm, no Sass, no external fonts or CDN dependencies. CSS and JS are processed
 - **Light / dark mode** — system preference detection + manual toggle persisted to `localStorage`
 - **Responsive** — 3 / 2 / 1 column breakpoints, with an optional toggle to hide the hero on mobile
 - **Inline image shortcode** — `{{< img >}}` with `left` / `right` / `center` / `full` alignment, optional caption and width override; floats collapse gracefully on mobile
-- **Structured data** — optional JSON-LD (schema.org) per post, from a `schema` front-matter block; optional `Person` entity for the homepage via `params.person_ld`
+- **Structured data** — optional JSON-LD (schema.org) per post, from a `schema` front-matter block; `WebSite` entity always emitted on the homepage (enables Sitelinks Search Box via `params.website_ld`); optional `Person` entity via `params.person_ld`
 - **EchoThread comments** — opt-in comment section per post; set `params.echothread.apiKey` to enable
 - **No external dependencies** — system font stacks, Hugo Pipes for CSS/JS minification and fingerprinting
 - **i18n ready** — Italian and English string files included; add more via `i18n/`
@@ -118,6 +118,7 @@ defaultContentLanguage = "en"
 | `params.echothread.shortname` | — | Your EchoThread shortname (the `data-shortname` attribute on the widget). |
 | `params.echothread.theme` | `auto` | Widget colour scheme: `auto` (follows OS preference), `light`, or `dark`. |
 | `params.echothread.accentColor` | — | Optional hex colour for the widget accent (e.g. `#2f5d50` to match the theme default). |
+| `params.website_ld.search_url_template` | — | Enables Sitelinks Search Box rich result. Must contain `{search_term_string}`. See [Homepage WebSite structured data](#homepage-website-structured-data). |
 | `params.person_ld.*` | — | Person JSON-LD for the homepage. See [Homepage Person structured data](#homepage-person-structured-data) for all sub-keys. |
 
 ---
@@ -311,6 +312,42 @@ The JSON is assembled with Hugo's `dict`/`slice` and serialised with `jsonify`, 
 
 ---
 
+## Homepage WebSite structured data
+
+A `schema.org/WebSite` `<script type="application/ld+json">` block is **always emitted** on the homepage using the site title and `baseURL` — no configuration required. This is the type that Google's Rich Results Test detects on the homepage.
+
+Optionally, add a `SearchAction` (Sitelinks Search Box) by setting `search_url_template`. The URL must point to a real search endpoint on your site and must contain the literal placeholder `{search_term_string}`:
+
+```toml
+[params.website_ld]
+  search_url_template = "https://example.org/?q={search_term_string}"
+```
+
+The resulting JSON-LD:
+
+```json
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "My Blog",
+  "url": "https://example.org/",
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": {
+      "@type": "EntryPoint",
+      "urlTemplate": "https://example.org/?q={search_term_string}"
+    },
+    "query-input": "required name=search_term_string"
+  }
+}
+```
+
+Google may show a search box directly in search results (Sitelinks Search Box) if it decides the site qualifies. Leave `search_url_template` absent to omit the `potentialAction`.
+
+> **Note:** `schema.org/Person` (via `params.person_ld`) is indexed by Google and contributes to the Knowledge Graph, but is not a rich-result type — it will not appear as a "detected item" in the Rich Results Test. The `WebSite` block above is what makes the test show a detected item on the homepage.
+
+---
+
 ## Homepage Person structured data
 
 Set `[params.person_ld]` in `hugo.toml` to emit a `schema.org/Person` `<script type="application/ld+json">` block in the `<head>` of the **homepage only**. All fields are optional — only those present are included in the output. The `address` sub-object is omitted when no `address_*` key is set.
@@ -434,6 +471,7 @@ hugo-kraft-masonry/
 │       ├── post-card.html      # masonry card (normal + wide)
 │       ├── schema.html         # JSON-LD structured data (per post)
 │       ├── schema-homepage.html  # JSON-LD Person data (homepage only, params.person_ld)
+│       ├── schema-website.html   # JSON-LD WebSite data (homepage always, SearchAction via params.website_ld)
 │       └── theme-init.html     # inline blocking script (no flash)
 ├── exampleSite/                # demo site with sample posts
 ├── theme.toml
