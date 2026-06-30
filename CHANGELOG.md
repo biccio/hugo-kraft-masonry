@@ -5,6 +5,13 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); version
 
 ---
 
+## [0.9.0] — 2026-06-30
+
+### Added
+- **Homepage Person JSON-LD** — set `[params.person_ld]` in `hugo.toml` to emit a `schema.org/Person` `<script type="application/ld+json">` block in the `<head>` of the homepage only. Supports name fields (`person_name`, `person_given_name`, `person_family_name`), contact info (`person_email`, `person_telephone`, `person_url`), `person_image`, `person_vatid`, `person_knows_language` (array), and a full `PostalAddress` sub-object via `address_*` keys. All fields are optional; the address block is omitted when no `address_*` key is set.
+
+---
+
 ## [0.8.0] — 2026-06-29
 
 ### Added
