@@ -94,6 +94,10 @@
      front-matter block (see partials/schema.html). */}}
 {{ partial "schema.html" . }}
 
+{{/* JSON-LD Person data for the homepage (see partials/schema-homepage.html
+     and params.person_ld in hugo.toml). */}}
+{{ partial "schema-homepage.html" . }}
+
 {{/* Stylesheet: processed, minified and fingerprinted via Hugo Pipes */}}
 {{ $css := resources.Get "css/main.css" }}
 {{ if hugo.IsProduction }}

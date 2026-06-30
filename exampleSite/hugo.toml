@@ -38,6 +38,25 @@ disablePathToLower = false
   #   theme       = "auto"           # auto | light | dark  (default: auto)
   #   accentColor = ""               # optional hex accent, e.g. "#2f5d50"
 
+  # Person structured data (JSON-LD) for the homepage — optional.
+  # When present, a <script type="application/ld+json"> block with @type Person
+  # is emitted in the <head> of the homepage only. All fields are optional.
+  # [params.person_ld]
+  #   person_name            = "John Doe"
+  #   person_family_name     = "Doe"
+  #   person_given_name      = "John"
+  #   person_image           = "https://example.org/john_doe.webp"
+  #   person_telephone       = "+491231234567"
+  #   person_email           = "john.doe@example.org"
+  #   person_url             = "https://john_doe.example.org/"
+  #   person_vatid           = "DE123456789"
+  #   person_knows_language  = ["de-DE", "en-US"]
+  #   address_street         = "Am Hauptbahnhof"
+  #   address_postal_code    = "60329"
+  #   address_locality       = "Frankfurt am Main"
+  #   address_region         = "Hesse"
+  #   address_country        = "DE"
+
   [params.footer]
     left  = "&copy; 2026 Kraft Masonry"
     right = "Built with [Hugo](https://gohugo.io) &amp; **Kraft Masonry**"

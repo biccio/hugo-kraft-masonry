@@ -1,0 +1,59 @@
+{{/* =========================================================================
+     partials/schema-homepage.html — JSON-LD Person structured data for the
+     homepage.
+
+     Emits a <script type="application/ld+json"> block only when:
+       1. The current page is the homepage (.IsHome)
+       2. params.person_ld is defined in hugo.toml
+
+     All fields are optional — only those present in params.person_ld are
+     included in the output. The object is built with `dict` and serialised
+     with `jsonify` so quoting and escaping are always valid.
+
+     TOML key → schema.org property mapping:
+       person_name            → name
+       person_family_name     → familyName
+       person_given_name      → givenName
+       person_image           → image
+       person_telephone       → telephone
+       person_email           → email
+       person_url             → url
+       person_vatid           → vatID
+       person_knows_language  → knowsLanguage  (array)
+       address_street         → address.streetAddress
+       address_postal_code    → address.postalCode
+       address_locality       → address.addressLocality
+       address_region         → address.addressRegion
+       address_country        → address.addressCountry
+     ========================================================================= */}}
+
+{{ if .IsHome }}
+  {{ with .Site.Params.person_ld }}
+    {{ $ld := . }}
+
+    {{ $data := dict "@context" "https://schema.org" "@type" "Person" }}
+
+    {{ with $ld.person_name }}{{ $data = merge $data (dict "name" .) }}{{ end }}
+    {{ with $ld.person_family_name }}{{ $data = merge $data (dict "familyName" .) }}{{ end }}
+    {{ with $ld.person_given_name }}{{ $data = merge $data (dict "givenName" .) }}{{ end }}
+    {{ with $ld.person_image }}{{ $data = merge $data (dict "image" .) }}{{ end }}
+    {{ with $ld.person_telephone }}{{ $data = merge $data (dict "telephone" .) }}{{ end }}
+    {{ with $ld.person_email }}{{ $data = merge $data (dict "email" .) }}{{ end }}
+    {{ with $ld.person_url }}{{ $data = merge $data (dict "url" .) }}{{ end }}
+    {{ with $ld.person_vatid }}{{ $data = merge $data (dict "vatID" .) }}{{ end }}
+    {{ with $ld.person_knows_language }}{{ $data = merge $data (dict "knowsLanguage" .) }}{{ end }}
+
+    {{/* PostalAddress: built only when at least one address field is set */}}
+    {{ $addr := dict "@type" "PostalAddress" }}
+    {{ with $ld.address_street }}{{ $addr = merge $addr (dict "streetAddress" .) }}{{ end }}
+    {{ with $ld.address_postal_code }}{{ $addr = merge $addr (dict "postalCode" .) }}{{ end }}
+    {{ with $ld.address_locality }}{{ $addr = merge $addr (dict "addressLocality" .) }}{{ end }}
+    {{ with $ld.address_region }}{{ $addr = merge $addr (dict "addressRegion" .) }}{{ end }}
+    {{ with $ld.address_country }}{{ $addr = merge $addr (dict "addressCountry" .) }}{{ end }}
+    {{ if gt (len $addr) 1 }}{{ $data = merge $data (dict "address" $addr) }}{{ end }}
+
+  <script type="application/ld+json">
+{{ $data | jsonify (dict "indent" "  ") | safeJS }}
+  </script>
+  {{ end }}
+{{ end }}
