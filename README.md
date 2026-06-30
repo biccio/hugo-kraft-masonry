@@ -25,7 +25,7 @@ No npm, no Sass, no external fonts or CDN dependencies. CSS and JS are processed
 - **Light / dark mode** — system preference detection + manual toggle persisted to `localStorage`
 - **Responsive** — 3 / 2 / 1 column breakpoints, with an optional toggle to hide the hero on mobile
 - **Inline image shortcode** — `{{< img >}}` with `left` / `right` / `center` / `full` alignment, optional caption and width override; floats collapse gracefully on mobile
-- **Structured data** — optional JSON-LD (schema.org) per post, from a `schema` front-matter block
+- **Structured data** — optional JSON-LD (schema.org) per post, from a `schema` front-matter block; optional `Person` entity for the homepage via `params.person_ld`
 - **EchoThread comments** — opt-in comment section per post; set `params.echothread.apiKey` to enable
 - **No external dependencies** — system font stacks, Hugo Pipes for CSS/JS minification and fingerprinting
 - **i18n ready** — Italian and English string files included; add more via `i18n/`
@@ -118,6 +118,7 @@ defaultContentLanguage = "en"
 | `params.echothread.shortname` | — | Your EchoThread shortname (the `data-shortname` attribute on the widget). |
 | `params.echothread.theme` | `auto` | Widget colour scheme: `auto` (follows OS preference), `light`, or `dark`. |
 | `params.echothread.accentColor` | — | Optional hex colour for the widget accent (e.g. `#2f5d50` to match the theme default). |
+| `params.person_ld.*` | — | Person JSON-LD for the homepage. See [Homepage Person structured data](#homepage-person-structured-data) for all sub-keys. |
 
 ---
 
@@ -310,6 +311,49 @@ The JSON is assembled with Hugo's `dict`/`slice` and serialised with `jsonify`, 
 
 ---
 
+## Homepage Person structured data
+
+Set `[params.person_ld]` in `hugo.toml` to emit a `schema.org/Person` `<script type="application/ld+json">` block in the `<head>` of the **homepage only**. All fields are optional — only those present are included in the output. The `address` sub-object is omitted when no `address_*` key is set.
+
+```toml
+[params.person_ld]
+  person_name            = "John Doe"
+  person_family_name     = "Doe"
+  person_given_name      = "John"
+  person_image           = "https://example.org/john_doe.webp"
+  person_telephone       = "+491231234567"
+  person_email           = "john.doe@example.org"
+  person_url             = "https://john_doe.example.org/"
+  person_vatid           = "DE123456789"
+  person_knows_language  = ["de-DE", "en-US"]
+  address_street         = "Am Hauptbahnhof"
+  address_postal_code    = "60329"
+  address_locality       = "Frankfurt am Main"
+  address_region         = "Hesse"
+  address_country        = "DE"
+```
+
+| TOML key | schema.org property | Notes |
+|---|---|---|
+| `person_name` | `name` | Full display name. |
+| `person_family_name` | `familyName` | |
+| `person_given_name` | `givenName` | |
+| `person_image` | `image` | Absolute URL of the person's photo. |
+| `person_telephone` | `telephone` | Include country code, e.g. `+491231234567`. |
+| `person_email` | `email` | |
+| `person_url` | `url` | Canonical URL of the person's website or profile. |
+| `person_vatid` | `vatID` | VAT identification number. |
+| `person_knows_language` | `knowsLanguage` | Array of BCP 47 language tags, e.g. `["de-DE", "en-US"]`. |
+| `address_street` | `address.streetAddress` | Implies a `PostalAddress` sub-object. |
+| `address_postal_code` | `address.postalCode` | |
+| `address_locality` | `address.addressLocality` | City / town. |
+| `address_region` | `address.addressRegion` | State, county, or region. |
+| `address_country` | `address.addressCountry` | ISO 3166-1 alpha-2 country code, e.g. `DE`. |
+
+The object is assembled with Hugo's `dict` and serialised with `jsonify` (same approach as the per-post `schema.html`). Validate the output with Google's [Rich Results Test](https://search.google.com/test/rich-results) or [Schema Markup Validator](https://validator.schema.org/). Leave the block absent to disable homepage structured data entirely.
+
+---
+
 ## Light / dark mode
 
 - On load, an **inline blocking script** in `<head>` (`partials/theme-init.html`) sets `data-theme="light"` or `"dark"` on `<html>` before the first paint, reading `localStorage` first, then `prefers-color-scheme`. No flash.
@@ -389,6 +433,7 @@ hugo-kraft-masonry/
 │       ├── header.html         # site logo + nav + light/dark toggle
 │       ├── post-card.html      # masonry card (normal + wide)
 │       ├── schema.html         # JSON-LD structured data (per post)
+│       ├── schema-homepage.html  # JSON-LD Person data (homepage only, params.person_ld)
 │       └── theme-init.html     # inline blocking script (no flash)
 ├── exampleSite/                # demo site with sample posts
 ├── theme.toml
